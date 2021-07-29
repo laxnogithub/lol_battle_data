@@ -1,0 +1,19 @@
+{
+    "path-autocomplete.pathMappings": {
+        "@": "${folder}/src/",
+        "@pro": "${folder}/",
+        "@web": "${folder}/web/",
+        "@test": "${folder}/test/",
+    },
+    "terminal.integrated.scrollback": 10000,
+    "cSpell.words": [
+        "QTFM",
+        "curdate",
+        "linebreak",
+        "officegen",
+        "pagebreak",
+        "targetchanged",
+        "tinyint"
+    ],
+    "js/ts.implicitProjectConfig.experimentalDecorators": true,
+}
