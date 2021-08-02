@@ -1,7 +1,7 @@
 {
     "path-autocomplete.pathMappings": {
         "@": "${folder}/src/",
-        "@pro": "${folder}/",
+        "@root": "${folder}/",
         "@web": "${folder}/web/",
         "@test": "${folder}/test/",
     },

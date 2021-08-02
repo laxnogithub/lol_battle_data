@@ -4,28 +4,16 @@
  * @Author: lax
  * @Date: 2021-07-31 18:45:10
  * @LastEditors: lax
- * @LastEditTime: 2021-07-31 19:26:49
- * @FilePath: \lol_battle_data\src\index.js
+ * @LastEditTime: 2021-08-02 15:04:17
+ * @FilePath: \lolBattleData\src\index.js
  */
 const puppeteer = require("puppeteer");
+const { BROWSER_CONFIG } = require("@/config/");
 const plan = require("@/plan/index.js");
 
-const CHROME_PATH = `C:/Program Files (x86)/Google/Chrome/Application/chrome.exe`;
-
 (async () => {
-	const browser = await puppeteer.launch({
-		executablePath: CHROME_PATH,
-		headless: false,
-		defaultViewport: {
-			width: 1920,
-			height: 1080
-		}
-	});
-	const page = await browser.newPage();
-	await page.goto("https://lolchess.gg/leaderboards", {
-		waitUntil: "domcontentloaded"
-	});
-	plan(page);
+	const browser = await puppeteer.launch(BROWSER_CONFIG);
+	await plan(browser);
 
 	// await browser.close();
 })();
