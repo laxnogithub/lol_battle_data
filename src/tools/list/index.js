@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2021-08-02 14:53:01
  * @LastEditors: lax
- * @LastEditTime: 2021-08-02 15:08:37
+ * @LastEditTime: 2021-08-03 10:43:36
  * @FilePath: \lolBattleData\src\tools\list\index.js
  */
 module.exports = el => {
