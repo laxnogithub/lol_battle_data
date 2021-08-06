@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2021-08-03 10:51:22
  * @LastEditors: lax
- * @LastEditTime: 2021-08-03 11:26:08
+ * @LastEditTime: 2021-08-06 10:27:34
  * @FilePath: \lolBattleData\src\plan\rank\rankList.js
  */
 const LolChess = require("@/tools/lolchess/");
@@ -16,6 +16,7 @@ const DEFAULT_PAGE_OPTION = {
 const CONTENT = `table`;
 
 module.exports = async ({ browser }) => {
+	console.log(` *** start to get rank list ***`);
 	// lolchess handler
 	const lol = new LolChess();
 
@@ -23,7 +24,8 @@ module.exports = async ({ browser }) => {
 	const callbacks = Array(10)
 		.fill({})
 		.map(async (each, i) => {
-			console.log(` *** select page: ${lol.setPage(i + 1)} ***`);
+			setTimeout(null, 1000);
+			console.log(` *** goto index: ${i + 1} ***`);
 			const page = await browser.newPage();
 			await page.goto(lol.setPage(i + 1), DEFAULT_PAGE_OPTION);
 
@@ -45,6 +47,7 @@ module.exports = async ({ browser }) => {
 					});
 				});
 
+				// add title list
 				if (j === 0) {
 					// rank list title
 					const head = Array.from(el.querySelector("thead").children);
@@ -61,10 +64,14 @@ module.exports = async ({ browser }) => {
 				return contents;
 			});
 
+			console.log(` *** get list over ***`);
+
 			return table;
 		});
 
 	const _rankList = await Promise.all(callbacks);
+
+	console.log(` *** end to get rank list ***`);
 
 	return _rankList.reduce((acc, next) => {
 		return acc.concat(next);
