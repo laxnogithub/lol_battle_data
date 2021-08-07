@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2021-05-24 10:10:05
  * @LastEditors: lax
- * @LastEditTime: 2021-08-07 17:18:03
+ * @LastEditTime: 2021-08-07 18:26:26
  * @FilePath: \lol_battle_data\src\db\index.js
  */
 const { createConnection } = require("typeorm");

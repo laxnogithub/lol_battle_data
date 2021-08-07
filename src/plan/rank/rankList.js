@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2021-08-03 10:51:22
  * @LastEditors: lax
- * @LastEditTime: 2021-08-07 17:34:07
+ * @LastEditTime: 2021-08-07 19:19:33
  * @FilePath: \lol_battle_data\src\plan\rank\rankList.js
  */
 const LolChess = require("@/tools/lolchess/");
@@ -24,45 +24,55 @@ module.exports = async ({ browser }) => {
 	const callbacks = Array(10)
 		.fill({})
 		.map(async (each, i) => {
-			setTimeout(() => {}, 1000);
+			await setTimeout(() => {}, 1000);
 			console.log(` *** goto index: ${i + 1} ***`);
 			const page = await browser.newPage();
 			await page.goto(lol.setPage(i + 1), DEFAULT_PAGE_OPTION);
 
 			// rank list
-			const table = await page.$eval(CONTENT, (el, j) => {
-				// rank list content
-				const body = Array.from(el.querySelector("tbody").children);
+			const table = await page.$eval(
+				CONTENT,
+				(el, _i) => {
+					// rank list content
+					const body = Array.from(el.querySelector("tbody").children);
 
-				const contents = body.map(row => {
-					return Array.from(row.children).map(_col => {
-						const className = _col.classList[0];
-						let value = _col.innerText.trim();
-						if (className === "summoner") value = value.split("#1")[0].trim();
-						if (className === "tier")
-							value = _col
-								.querySelector("span[class=tier-name-sm]")
-								.innerText.trim();
-						return value;
-					});
-				});
-
-				// add title list
-				if (j === 0) {
-					// rank list title
-					const head = Array.from(el.querySelector("thead").children);
-
-					const titles = head.map(row => {
-						return Array.from(row.children).map(col => {
-							const title = col.innerText.trim();
-							return title;
+					const contents = body.map(row => {
+						let rows = Array.from(row.children);
+						// page 10 last col
+						if (_i === 9) rows = rows.slice(0, rows.length - 2);
+						return rows.map(_col => {
+							const className = _col.classList[0];
+							let value = _col.innerText.trim();
+							if (className === "summoner") value = value.split("#1")[0].trim();
+							if (className === "tier")
+								value = _col
+									.querySelector("span[class=tier-name-sm]")
+									.innerText.trim();
+							if (className === "lp") value = value.split("LP")[0].trim();
+							if (className === "winrate") value = value.split("%")[0].trim();
+							if (className === "toprate") value = value.split("%")[0].trim();
+							return value;
 						});
 					});
-					return [].concat(titles, contents);
-				}
 
-				return contents;
-			});
+					// add title list
+					// if (j === 0) {
+					// 	// rank list title
+					// 	const head = Array.from(el.querySelector("thead").children);
+
+					// 	const titles = head.map(row => {
+					// 		return Array.from(row.children).map(col => {
+					// 			const title = col.innerText.trim();
+					// 			return title;
+					// 		});
+					// 	});
+					// 	return [].concat(titles, contents);
+					// }
+
+					return contents;
+				},
+				i
+			);
 
 			console.log(` *** get list over ***`);
 

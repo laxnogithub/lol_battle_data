@@ -4,12 +4,13 @@
  * @Author: lax
  * @Date: 2021-07-31 19:07:59
  * @LastEditors: lax
- * @LastEditTime: 2021-08-07 17:34:35
+ * @LastEditTime: 2021-08-07 19:08:34
  * @FilePath: \lol_battle_data\src\plan\index.js
  */
 const HOME = `https://lolchess.gg/leaderboards`;
-
-const { getRankList } = require("@/plan/rank/index.js");
+const fs = require("fs");
+const path = require("path");
+const { getRankList, saveRank } = require("@/plan/rank/index.js");
 const DEFAULT_PAGE_OPTION = {
 	waitUntil: "domcontentloaded"
 };
@@ -24,5 +25,11 @@ module.exports = async browser => {
 	});
 
 	const rankList = await getRankList({ browser, page });
-	console.log(rankList);
+
+	fs.writeFileSync(
+		path.resolve(__dirname, "/data.json"),
+		JSON.stringify(rankList)
+	);
+
+	await saveRank(rankList);
 };

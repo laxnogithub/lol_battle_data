@@ -15,7 +15,9 @@
         "pagebreak",
         "targetchanged",
         "tinyint",
-        "varcher"
+        "toprate",
+        "varcher",
+        "winrate"
     ],
     "js/ts.implicitProjectConfig.experimentalDecorators": true,
 }
