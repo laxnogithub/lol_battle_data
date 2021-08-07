@@ -4,8 +4,8 @@
  * @Author: lax
  * @Date: 2021-08-03 10:42:25
  * @LastEditors: lax
- * @LastEditTime: 2021-08-03 11:01:25
- * @FilePath: \lolBattleData\src\tools\lolchess\index.js
+ * @LastEditTime: 2021-08-07 17:33:14
+ * @FilePath: \lol_battle_data\src\tools\lolchess\index.js
  */
 const COUNTRY_LIST = ["kr", "na"];
 const MAX_PAGE = 10;

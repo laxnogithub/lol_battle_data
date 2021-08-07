@@ -4,8 +4,8 @@
  * @Author: lax
  * @Date: 2021-08-03 10:51:22
  * @LastEditors: lax
- * @LastEditTime: 2021-08-06 10:27:34
- * @FilePath: \lolBattleData\src\plan\rank\rankList.js
+ * @LastEditTime: 2021-08-07 17:34:07
+ * @FilePath: \lol_battle_data\src\plan\rank\rankList.js
  */
 const LolChess = require("@/tools/lolchess/");
 
@@ -24,7 +24,7 @@ module.exports = async ({ browser }) => {
 	const callbacks = Array(10)
 		.fill({})
 		.map(async (each, i) => {
-			setTimeout(null, 1000);
+			setTimeout(() => {}, 1000);
 			console.log(` *** goto index: ${i + 1} ***`);
 			const page = await browser.newPage();
 			await page.goto(lol.setPage(i + 1), DEFAULT_PAGE_OPTION);

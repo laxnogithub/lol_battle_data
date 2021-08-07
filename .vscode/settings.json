@@ -14,7 +14,8 @@
         "officegen",
         "pagebreak",
         "targetchanged",
-        "tinyint"
+        "tinyint",
+        "varcher"
     ],
     "js/ts.implicitProjectConfig.experimentalDecorators": true,
 }

@@ -4,8 +4,8 @@
  * @Author: lax
  * @Date: 2021-07-31 19:07:59
  * @LastEditors: lax
- * @LastEditTime: 2021-08-03 11:26:45
- * @FilePath: \lolBattleData\src\plan\index.js
+ * @LastEditTime: 2021-08-07 17:34:35
+ * @FilePath: \lol_battle_data\src\plan\index.js
  */
 const HOME = `https://lolchess.gg/leaderboards`;
 
@@ -24,4 +24,5 @@ module.exports = async browser => {
 	});
 
 	const rankList = await getRankList({ browser, page });
+	console.log(rankList);
 };
