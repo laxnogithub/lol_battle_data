@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2021-08-03 10:51:22
  * @LastEditors: lax
- * @LastEditTime: 2021-08-07 19:19:33
+ * @LastEditTime: 2021-08-14 19:13:02
  * @FilePath: \lol_battle_data\src\plan\rank\rankList.js
  */
 const LolChess = require("@/tools/lolchess/");
@@ -27,7 +27,7 @@ module.exports = async ({ browser }) => {
 			await setTimeout(() => {}, 1000);
 			console.log(` *** goto index: ${i + 1} ***`);
 			const page = await browser.newPage();
-			await page.goto(lol.setPage(i + 1), DEFAULT_PAGE_OPTION);
+			await page.goto(lol.getRankUrl(undefined, i + 1), DEFAULT_PAGE_OPTION);
 
 			// rank list
 			const table = await page.$eval(
@@ -35,11 +35,11 @@ module.exports = async ({ browser }) => {
 				(el, _i) => {
 					// rank list content
 					const body = Array.from(el.querySelector("tbody").children);
+					// page 10 last col
+					if (_i === 9) body.pop();
 
 					const contents = body.map(row => {
 						let rows = Array.from(row.children);
-						// page 10 last col
-						if (_i === 9) rows = rows.slice(0, rows.length - 2);
 						return rows.map(_col => {
 							const className = _col.classList[0];
 							let value = _col.innerText.trim();

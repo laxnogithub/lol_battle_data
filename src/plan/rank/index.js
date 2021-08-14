@@ -4,10 +4,11 @@
  * @Author: lax
  * @Date: 2021-08-03 10:51:11
  * @LastEditors: lax
- * @LastEditTime: 2021-08-07 19:00:28
+ * @LastEditTime: 2021-08-14 19:06:32
  * @FilePath: \lol_battle_data\src\plan\rank\index.js
  */
 const getRankList = require("@/plan/rank/rankList.js");
+const { getUserByName } = require("@/plan/rank/getUserByName.js");
 const rankDao = require("@/dao/rankDao.js");
 const sha256 = require("sha256");
 
@@ -32,8 +33,7 @@ function arrToObj(data) {
 
 async function saveRank(data) {
 	const _data = arrToObj(data);
-	console.log(_data);
 	await rankDao.save(_data);
 }
 
-module.exports = { getRankList, saveRank };
+module.exports = { getRankList, saveRank, getUserByName };
