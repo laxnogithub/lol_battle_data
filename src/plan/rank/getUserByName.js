@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2021-08-14 18:43:06
  * @LastEditors: lax
- * @LastEditTime: 2021-08-14 19:14:01
+ * @LastEditTime: 2021-08-22 19:09:57
  * @FilePath: \lol_battle_data\src\plan\rank\getUserByName.js
  */
 const LolChess = require("@/tools/lolchess/");
@@ -13,8 +13,11 @@ const DEFAULT_PAGE_OPTION = {
 	waitUntil: "domcontentloaded"
 };
 
-const CONTENT_CLASS_NAME = `profile__match-history-v2__items`;
-const USERINFO_FLAG = `.profile__match-history-v2__item placement-2`;
+const CONTENT_CLASS_NAME = `.profile__match-history-v2__items`;
+const USERINFO_DETAIL = `.profile__match-history-v2__item__detail table`;
+const USERINFO_FLAG = `.profile__match-history-v2__item`;
+const DETAIL_BUTTON = `.toggle-detail`;
+const DATA_ID = `data-match-id`;
 
 async function getUserByName({ browser, name }) {
 	const lol = new LolChess();
@@ -24,10 +27,76 @@ async function getUserByName({ browser, name }) {
 	const page = await browser.newPage();
 	await page.goto(lol.getUserUrl(undefined, index, name), DEFAULT_PAGE_OPTION);
 
-	await page.$eval(CONTENT_CLASS_NAME, el => {
-		console.log("231");
-		const rows = el.querySelector(USERINFO_FLAG);
-		console.log(rows);
+	const ids = await page.$eval(
+		CONTENT_CLASS_NAME,
+		(el, data) => {
+			const rows = Array.from(el.querySelectorAll(data.USERINFO_FLAG));
+			return rows.map(el => {
+				const detailBt = el.querySelector(data.DETAIL_BUTTON);
+				const id = el.getAttribute(data.DATA_ID);
+				detailBt.click();
+				return id;
+			});
+		},
+		{ USERINFO_FLAG, DETAIL_BUTTON, DATA_ID }
+	);
+
+	page.on("response", async resp => {
+		const url = resp.url();
+		// 成功访问 lolchess.gg/profile/kr/matchDetail/
+		if (url.indexOf("matchDetail") !== -1) {
+			const arr = url.split("/");
+			const id = arr[arr.length - 1];
+			if (ids.includes(id)) {
+				await page.$eval(USERINFO_DETAIL, el => {
+					const body = el.querySelector("tbody");
+					const rows = Array.from(body.querySelectorAll("tr"));
+					rows.map(row => {
+						const data = {
+							name: row
+								.querySelectorAll(".summoner a span")[1]
+								.innerText.trim(),
+							round: row.querySelector(".round").innerText.trim(),
+							alive: row.querySelector(".time_eliminated").innerText.trim(),
+							traits: Array.from(
+								row.querySelectorAll(".traits div.tft-hexagon-image img")
+							).map(img => {
+								return img.getAttribute("alt");
+							}),
+							champions: Array.from(
+								row.querySelectorAll(".champions div.champions__item")
+							).map(champions => {
+								return {
+									// use image name
+									stars: (() => {
+										// cdn.lolchess.gg / images / tft / stars / cost3_stars2.png;
+										const char = champions
+											.querySelector("img")
+											.getAttribute("src")
+											.split("cost3_stars")[1]
+											.split(".")[0];
+										return char[char.length - 1];
+									})(),
+									// hero name
+									name: champions
+										.querySelector(".champions__image img")
+										.getAttribute("alt"),
+									// hero weapons
+									weapon: Array.from(
+										champions.querySelectorAll(".champions__items img")
+									).map(wp => {
+										const wpName = wp.getAttribute("data-original-title");
+										return wpName;
+									})
+								};
+							})
+						};
+						console.log(data);
+						return data;
+					});
+				});
+			}
+		}
 	});
 }
 
