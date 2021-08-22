@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2021-08-14 18:43:06
  * @LastEditors: lax
- * @LastEditTime: 2021-08-22 19:09:57
+ * @LastEditTime: 2021-08-22 19:19:41
  * @FilePath: \lol_battle_data\src\plan\rank\getUserByName.js
  */
 const LolChess = require("@/tools/lolchess/");
@@ -56,6 +56,9 @@ async function getUserByName({ browser, name }) {
 							name: row
 								.querySelectorAll(".summoner a span")[1]
 								.innerText.trim(),
+							level: row
+								.querySelector(".summoner div.avatar span.level")
+								.innerText.trim(),
 							round: row.querySelector(".round").innerText.trim(),
 							alive: row.querySelector(".time_eliminated").innerText.trim(),
 							traits: Array.from(
@@ -73,8 +76,7 @@ async function getUserByName({ browser, name }) {
 										const char = champions
 											.querySelector("img")
 											.getAttribute("src")
-											.split("cost3_stars")[1]
-											.split(".")[0];
+											.split(".png")[0];
 										return char[char.length - 1];
 									})(),
 									// hero name
@@ -89,9 +91,9 @@ async function getUserByName({ browser, name }) {
 										return wpName;
 									})
 								};
-							})
+							}),
+							coin: row.querySelector(".gold_left").innerText.trim()
 						};
-						console.log(data);
 						return data;
 					});
 				});
