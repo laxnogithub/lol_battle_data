@@ -4,7 +4,7 @@
  * @Author: lax
  * @Date: 2021-08-14 18:43:06
  * @LastEditors: lax
- * @LastEditTime: 2021-09-21 17:48:19
+ * @LastEditTime: 2021-09-21 18:03:07
  * @FilePath: \lol_battle_data\src\plan\rank\getUserByName.js
  */
 const LolChess = require("@/tools/lolchess/");
@@ -28,7 +28,7 @@ function __getIdByElementCollection(collection, data) {
 function __getBattleInfoById(el) {
 	const body = el.querySelector("tbody");
 	const rows = Array.from(body.querySelectorAll("tr"));
-	rows.map(row => {
+	const info = rows.map(row => {
 		const name = row.querySelectorAll(".summoner a span")[1].innerText.trim();
 		const level = row
 			.querySelector(".summoner div.avatar span.level")
@@ -66,10 +66,7 @@ function __getBattleInfoById(el) {
 				})
 			};
 		});
-		console.log(`champions:${champions}`);
 		const coin = row.querySelector(".gold_left").innerText.trim();
-
-		console.log(name);
 
 		const data = {
 			name,
@@ -82,6 +79,7 @@ function __getBattleInfoById(el) {
 		};
 		return data;
 	});
+	return info;
 }
 
 function getIdByUrl(url) {
